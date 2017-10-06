@@ -42,5 +42,8 @@
 - int main():
   - Algorithm is as follows:
     1. initialize() the simulation (all global variables)
-    2. 
-    3. 
+    2. while (num_custs_delayed < num_delays_required)
+      - determine the next event (using timing() )
+      - update_stats()
+      - invoke depending on next_event_type arrive() or depart()
+    3. report() the logs into output.txt
