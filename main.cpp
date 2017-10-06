@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
-#include "lcgrand.h"  //Implementation rematining ###########################################
-
+///#include "lcgrand.h"  //Implementation rematining ###########################################
+#include "simFunctions.h"
 #define Q_LIMIT 100  //maximum customers in allowed in queue
 #define BUSY 1						//server busy
 #define IDLE 0						//server idle
@@ -19,15 +19,6 @@ float avg_num_in_q, avg_server_util, avg_interarrival,
 FILE *in, *out;
 // declare non simlib functions:
 
-void initialize();
-void timing();
-void arrive();
-void depart();
-void report();
-void update_stats();
-float generator();
-
-
 using namespace std;
 int main(){
 	in = fopen("input.txt", "r");
@@ -37,7 +28,7 @@ int main(){
 	num_events = 2;
 	//load the user defined interarrival, simulation number, service time into global vars
 	fscanf(in,"%f %f %d", &avg_interarrival, &avg_service_time, &num_delays_required);
-
+	initialize();
 	
 	return 0;
 }
