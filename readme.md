@@ -6,10 +6,10 @@
 - [ ] void initialize();
 - [ ] void timing();
 - [ ] void arrive();
-- [ ]void depart();
-- [ ]void report();
-- [ ]void update_stats();
-- [ ]float generator();
+- [ ] void depart();
+- [ ] void report();
+- [ ] void update_stats();
+- [ ] float generator();
 - [ ] Implement arrive()
 - [ ] Implement depart()
 
