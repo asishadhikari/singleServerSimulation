@@ -2,9 +2,16 @@
 **This is a project on creating a single server based queuing system**
 
 ### To Dos:
+- [ ] Implement main()
+- [ ] void initialize();
+- [ ] void timing();
+- [ ] void arrive();
+- [ ]void depart();
+- [ ]void report();
+- [ ]void update_stats();
+- [ ]float generator();
 - [ ] Implement arrive()
 - [ ] Implement depart()
-- [X] Implement main()
 
 ## Definitions of the global variables used(shared across functions):
 **State Variables:**		
@@ -23,8 +30,8 @@
     - time_next_event[1] : represents the time next departure will occur 
 
 **Statistical counters:**
-- *float:*
-  - avg_num_in_q: average cust in queue (0-1)
+- *float:
+  - avg_num_in_q: average number of cust in queue 
   - avg_server_util: average utilisation of server (0-1)
   - avg_interarrival: What is the average rate at which customers arrive. i.e. mean of Poisson process to be => **User Input**
   - avg_service_time: We assume that a service usually takes about a fixed time. i.e. Approximation how long service takes => **User Input**

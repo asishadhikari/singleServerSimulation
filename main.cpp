@@ -12,18 +12,20 @@ int num_custs_delayed, num_delays_required, next_event_type, num_events, num_in_
 float avg_num_in_q, avg_server_util, avg_interarrival, avg_service_time, sim_time, time_arrival[Q_LIMIT+1], 
     time_last_event, time_next_event[3],total_delays;
 
-FILE *infile, *outfile;
-
+FILE *in, *out;
 // declare non simlib functions:
-void init_model();
+
+void initialize();
+void timing();
 void arrive();
 void depart();
 void report();
+void update_stats();
+float generator();
 
 
 using namespace std;
 int main(){
-	init_simlib();
 	
 	
 	return 0;
