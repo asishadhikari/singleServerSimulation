@@ -1,20 +1,17 @@
-#include "simlib/src/simlib.h"
-
 #include <iostream>
+#include <stdio.h>
+#include <math.h>
+#include "lcgrand.h"  //Implementation rematining ###########################################
 
-#define EVENT_ARRIVAL 1    //Event type for arrival event
-#define EVENT_DEPARTURE 2  //Event type for departure
-#define LIST_QUEUE 1       // list number for the queue of customers in line
-#define LIST_SERVER 2			 //list number for the server. Contains either 0(idle) or 1(busy)
-#define SAMPST_DELAYS 1     //sampst variable (is used as a measure of performance in a simulation)
-#define STREAM_INTERARRIVAL 1      //random number stream for INTERARRIVAL of customers (generated acc to dist)
-#define STREAM_SERVICE 2						// random number stream for service time for customers (generated acc to dist)
+#define Q_LIMIT 100  //maximum customers in allowed in queue
+#define BUSY 1						//server busy
+#define IDLE 0						//server idle
 
 
-/*declare non simlib global variables*/
+int num_custs_delayed, num_delays_required, next_event_type, num_events, num_in_queue, server_status; //state variables
+float avg_num_in_q, avg_server_util, avg_interarrival, avg_service_time, sim_time, time_arrival[Q_LIMIT+1], 
+    time_last_event, time_next_event[3],total_delays;
 
-int num_custs_delayed, num_delays_required;
-float mean_interarrival, mean_service;
 FILE *infile, *outfile;
 
 // declare non simlib functions:
@@ -26,7 +23,8 @@ void report();
 
 using namespace std;
 int main(){
-	init();
+	init_simlib();
+	
 	
 	return 0;
 }
