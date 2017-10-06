@@ -15,6 +15,13 @@ State Variables:
   - num_events: 2 events possible so set at 2 used by timing()
   - num_in_queue: number of cust in a queue at an instant
   - server_status: state of server BUSY or IDLE
+- float:
+  - sim_time: time of simulation
+  - time_last_event: time of last arrival or departure
+  - time_next_event[2]: 
+    - time_next_event[0] : represents the time next arrival will occur
+    - time_next_event[1] : represents the time next departure will occur 
 
-float avg_num_in_q, avg_server_util, avg_interarrival, avg_service_time, sim_time, time_arrival[Q_LIMIT+1], 
-    time_last_event, time_next_event[3],total_delays;
+Statistical counters (mostly except sim_time (which is state variable, time))
+-float:
+ avg_num_in_q, avg_server_util, avg_interarrival, avg_service_time, time_arrival[Q_LIMIT+1], total_delays;
