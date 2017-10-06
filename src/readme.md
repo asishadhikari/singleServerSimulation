@@ -6,3 +6,4 @@
 -[] Implement arrive()
 -[] Implement depart()
 -[X] Implement main()
+'''
