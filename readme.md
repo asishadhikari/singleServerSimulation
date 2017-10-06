@@ -41,6 +41,6 @@
 ##Definitions of functions:
 - int main():
   - Algorithm is as follows:
-    - 1. initialize() the simulation (all global variables)
-    - 2. 
-    - 3. 
+    1. initialize() the simulation (all global variables)
+    2. 
+    3. 
