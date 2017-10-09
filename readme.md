@@ -2,16 +2,16 @@
 **This is a project on creating a single server based queuing system**
 
 ### To Dos:
-- [ ] Implement main()
-- [ ] void initialize();
-- [ ] void timing();
-- [ ] void arrive();
-- [ ] void depart();
-- [ ] void report();
-- [ ] void update_stats();
-- [ ] float generator();
-- [ ] Implement arrive()
-- [ ] Implement depart()
+- [X] Implement main()
+- [X] void initialize();
+- [X] void timing();
+- [X] void arrive();
+- [X] void depart();
+- [X] void report();
+- [X] void update_stats();
+- [X] float generator();
+- [X] Implement arrive()
+- [X] Implement depart()
 
 ## Definitions of the global variables used(shared across functions):
 **State Variables:**		
@@ -38,12 +38,13 @@
   - time_arrival[Q_LIMIT+1]: The arrival time array of all customers in the queue at any instant
   - total_delays: Used to calculate average delay in report(). Holds cumilitive delay for all customers.
 
-## Definitions of functions:
-- int main():
-  - Algorithm is as follows:
-    1. initialize() the simulation (all global variables)
-    2. while (num_custs_delayed < num_delays_required)
-       - determine the next event (using timing() )
-       - update_stats()
-       - invoke depending on next_event_type arrive() or depart()
-    3. report() the logs into output.txt
+## Building and running
+**After cloning into a local repo:**
+  - compile as gcc main.c -lm
+  - load 3 lines of input values into input.txt:
+    - line 1: mean for arrival rate (used to generate arrival time in Poisson distribution )
+    - line 2: mean for service rate (an estimation of how long each service take)
+    - line 3: desired number of customers to run simulation for (imported as num_delays_required)
+  - run binary program as ./a.out
+
+Feel free to leave any comments. Peace! &#9996;
