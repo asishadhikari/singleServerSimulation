@@ -1,0 +1,15 @@
+
+
+		This file contains the log of the Simulation
+
+Mean interarrival time 59.000000 minutes
+The provided mean service rate is: 58.000000 per minute
+The provided number of delays required (number of times a customer enters empty line) is: 300 minutes
+
+
+The average delay in the queue was 1074.670044 minutes.
+The average number of customer in the queue was 17.365192 minutes.
+The server utilization in this simulation was 0.959703 minutes.
+The simulation ended at time: 19573.630859 minutes.
+
+
