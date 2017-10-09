@@ -38,7 +38,7 @@
   - time_arrival[Q_LIMIT+1]: The arrival time array of all customers in the queue at any instant
   - total_delays: Used to calculate average delay in report(). Holds cumilitive delay for all customers.
 
-##Definitions of functions:
+## Definitions of functions:
 - int main():
   - Algorithm is as follows:
     1. initialize() the simulation (all global variables)
