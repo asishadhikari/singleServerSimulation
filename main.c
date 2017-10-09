@@ -42,9 +42,9 @@ int main(){
            &num_delays_required);
     
     fprintf(outfile, "\n\n\t\tThis file contains the log of the Simulation\n\n");
-    fprintf(outfile,"Mean interarrival time%f minutes\n", mean_interarrival);
+    fprintf(outfile,"Mean interarrival time %f minutes\n", mean_interarrival);
     fprintf(outfile, "The provided mean service rate is: %f per minute\n",mean_service);
-    fprintf(outfile, "The provided number of delays required (number of times a customer enters empty line) is: %i\n",num_delays_required);
+    fprintf(outfile, "The provided number of delays required (number of times a customer enters empty line) is: %i minutes\n",num_delays_required);
     initialize();
     //keep running simulation until the termination condition is  met. num_custs_delayed represents the 
         // number of customers who had to wait at the first place in the line (i.e. number of customers who were served)
@@ -52,23 +52,25 @@ int main(){
     while(num_custs_delayed<num_delays_required){
         timing();  //updates next_event_type based on time_next_event[] and updates sim_time
         update_time_avg_stats();
+
         switch(next_event_type){
             case 0:
                 fprintf(outfile, "List empty, program terminated at sim_time%f\n",sim_time);
                 exit(EXIT_FAILURE);
             case 1:
                 arrive();
+                break;
             case 2:
                 depart();
+                break;
         }
 
         //print to file average delay in queue, average number in queue, server utilization, time _simulation ended
-        report();
-    //fclose(infile);
-    //fclose(outfile);
-
-
     }
+    report();
+    
+    fclose(infile);
+    fclose(outfile);
     return 0;
 }
 
@@ -113,6 +115,8 @@ void timing(){
 
 void arrive(){
     float delay;
+    //schedule next arrival
+    time_next_event[1] = sim_time + expon(mean_interarrival);
     //if server is busy at a customer's arrival i.e there is a line 
     if(server_status==BUSY){
         num_in_q++;
@@ -123,10 +127,12 @@ void arrive(){
 
         //note that the queue starts at 1 and last index is 100(as Q_LIMIT + 1 used in index see above^^) index 0 is unused
         time_arrival[num_in_q] = sim_time;
+
     }
 
     //if the server is idle at customer's arrival
     else{
+        
         //delay for this customer is 0
         delay = 0;  
         //total delays for the customer (used to calculate average delay) 
@@ -149,14 +155,16 @@ void depart(){
         server_status= IDLE;
         //remove departure from consideration
         time_next_event[2] = 1.0e+30;
+        
     }
     //if queue not empty
     else{
+
         //decrease the number of custs in queue
         num_in_q--;
         //calculate delay for the departing customer (time_arrival[] is constantly being updated)
         delay = sim_time - time_arrival[1];
-        //update the statistical counter for total delay to calculate average delay
+       //update the statistical counter for total delay to calculate average delay
         total_of_delays+=delay;
         //this customer was delayed (used to keep track of number of simulations)
         num_custs_delayed++;
@@ -184,17 +192,17 @@ void update_time_avg_stats(){
     area_server_status += server_status*time_since_last_event;
 
     //update average number of customers in line using time-length average function (summation_of(lenth(i)*delta.time(i))/total_time) 
-    area_num_in_q += area_num_in_q * time_since_last_event;
+    area_num_in_q += num_in_q * time_since_last_event;
 }
 
 
 
         //print to file average delay in queue, average number in queue, server utilization, time _simulation ended
 void report(){
-    fprintf(outfile, "\n\nThe average delay in the queue was %f\n",total_of_delays/num_custs_delayed);
-    fprintf(outfile, "The average number of customer in the queue was %f\n",area_num_in_q/sim_time);
-    fprintf(outfile, "The server utilization in this simulation was %f\n",area_server_status/sim_time);
-    fprintf(outfile, "The simulation ended at time: %f\n\n\n",sim_time);
+    fprintf(outfile, "\n\nThe average delay in the queue was %f minutes.\n",total_of_delays/num_custs_delayed);
+    fprintf(outfile, "The average number of customer in the queue was %f minutes.\n",area_num_in_q/sim_time);
+    fprintf(outfile, "The server utilization in this simulation was %f minutes.\n",area_server_status/sim_time);
+    fprintf(outfile, "The simulation ended at time: %f minutes.\n\n\n",sim_time);
 
 }
 
