@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-//#include "lcgrand.h"
+#include "lcgrand.h"
 
 #define Q_LIMIT 100
 #define BUSY 1  
@@ -15,6 +15,7 @@
 
 int next_event_type, num_custs_delayed, num_delays_required, num_events,
     num_in_q, server_status;
+int busy = 2;
 
 float area_num_in_q, area_server_status, mean_interarrival, mean_service,
      sim_time, time_arrival[Q_LIMIT+1], time_last_event, time_next_event[3],
@@ -32,29 +33,25 @@ float expon(float mean);
 
 int main(){
     //contains mean_interarrival, mean_service, num_delays_required
-    infile = fopen("input.txt", "r");
-    outfile = fopen("output.txt", "w");
-
+    infile = fopen("input.in", "r");
+    outfile = fopen("output.out", "w");
     num_events = 2; //arrive and depart events only
 
     //read input
-    fscanf(infile, "%f, %f, %d", &mean_interarrival, &mean_service, &num_delays_required);
+    fscanf(infile, "%f %f %d", &mean_interarrival, &mean_service,
+           &num_delays_required);
     
-    fprintf(outfile, "\tThis file contains the log of the Simulation\\nn");
-    fprintf(outfile, "######################################################################\n");
-    fprintf(outfile, "Mean interarrival time%f minutes\n\n", mean_interarrival);
-    fprintf(outfile, "The provided mean service rate is: %f\n",mean_service);
+    fprintf(outfile, "\n\n\t\tThis file contains the log of the Simulation\n\n");
+    fprintf(outfile,"Mean interarrival time%f minutes\n", mean_interarrival);
+    fprintf(outfile, "The provided mean service rate is: %f per minute\n",mean_service);
     fprintf(outfile, "The provided number of delays required (number of times a customer enters empty line) is: %i\n",num_delays_required);
-
     initialize();
     //keep running simulation until the termination condition is  met. num_custs_delayed represents the 
         // number of customers who had to wait at the first place in the line (i.e. number of customers who were served)
     
-    while(num_delays_required>num_custs_delayed){
+    while(num_custs_delayed<num_delays_required){
         timing();  //updates next_event_type based on time_next_event[] and updates sim_time
-        
         update_time_avg_stats();
-
         switch(next_event_type){
             case 0:
                 fprintf(outfile, "List empty, program terminated at sim_time%f\n",sim_time);
@@ -64,6 +61,12 @@ int main(){
             case 2:
                 depart();
         }
+
+        //print to file average delay in queue, average number in queue, server utilization, time _simulation ended
+        report();
+    //fclose(infile);
+    //fclose(outfile);
+
 
     }
     return 0;
@@ -108,17 +111,6 @@ void timing(){
     sim_time = minimum_time;
 }
 
-
-
-void update_time_avg_stats(){
-    //updates time average statistical counters
-    /*statistical counters are:
-        - area_num_in_q, - area_server_status
-    */
-    float time_since_last_event = sim_time - time
-}
-
-
 void arrive(){
     float delay;
     //if server is busy at a customer's arrival i.e there is a line 
@@ -138,7 +130,7 @@ void arrive(){
         //delay for this customer is 0
         delay = 0;  
         //total delays for the customer (used to calculate average delay) 
-        total_of_delays+=delays;
+        total_of_delays+=delay;
         //total number of customers who made it through the first place in the queue i.e. number of simulations
         num_custs_delayed+=1;
         //change server status to byst
@@ -177,3 +169,37 @@ void depart(){
        }     
     }    
 }
+
+void update_time_avg_stats(){
+    //updates time average statistical counters
+    /*statistical counters are:
+        - area_num_in_q, - area_server_status, time_last_event
+    */
+
+    //compute time since last event (used to calc average) and update the last event time
+    float time_since_last_event = sim_time - time_last_event;  //is first initialsed to 0.0 
+    time_last_event = sim_time;
+
+    //update server utilisation (0 - 1)
+    area_server_status += server_status*time_since_last_event;
+
+    //update average number of customers in line using time-length average function (summation_of(lenth(i)*delta.time(i))/total_time) 
+    area_num_in_q += area_num_in_q * time_since_last_event;
+}
+
+
+
+        //print to file average delay in queue, average number in queue, server utilization, time _simulation ended
+void report(){
+    fprintf(outfile, "\n\nThe average delay in the queue was %f\n",total_of_delays/num_custs_delayed);
+    fprintf(outfile, "The average number of customer in the queue was %f\n",area_num_in_q/sim_time);
+    fprintf(outfile, "The server utilization in this simulation was %f\n",area_server_status/sim_time);
+    fprintf(outfile, "The simulation ended at time: %f\n\n\n",sim_time);
+
+}
+
+//exponential variate generation function for a given mean_service distribution mapped for mean
+float expon(float mean){
+    return (-mean*log(lcgrand(mean_service)));
+}
+
